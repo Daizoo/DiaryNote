@@ -29,5 +29,61 @@ function getCalenderData(year, month) {
 function generateCalender(year, month) {
   let dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   // 曜日一覧
+  let calenderData = getCalenderData(year, month);
+  // カレンダーデータ取得
+  var i = calenderData[0]['day'];
+  // 初日の曜日データ取得
+  /*初日より前の空欄埋め*/
+  while(i>0){
+    i--;
+    calenderData.unshift({
+      date: '',
+      day: i
+    });
+  }
+  /*末尾埋め*/
+  var i = calenderData[calenderData.length-1]['day'];
+  while(i<6){
+    i++;
+    calenderData.push({
+      date: '',
+      day: i
+    });
+  }
+  /*カレンダー(table属性)の生成*/
+  let calenderTable = document.createElement('table');
+  calenderTable.className = 'calender';
+  /*ヘッダー部分*/
+  var insertTag = '';
+  insertTag += '<thead>';
+  insertTag += '<tr>';
+  for(var i = 0; i < dayOfWeek.length; i++){
+    insertTag += '<th>';
+    insertTag += dayOfWeek[i];
+    insertTag += '</th>';
+  }
+  insertTag += '</tr>';
+  insertTag += '</thead>';
+  /*ボディ部分*/
+  insertTag += '<tbody>';
+  for(var i = 0; i < calenderData.length; i++){
+    if(calenderData[i]['day'] <= 0){
+      insertTag += '<tr>';
+    }
+    insertTag += '<td>';
+    insertTag += calenderData[i]['date'];
+    insertTag += '</td>';
+    if(calenderData[i]['day'] >= 6){
+      insertTag += '</tr>';
+    }
+  }
+  insertTag += '</tbody>';
 
+  calenderTable.innerHTML = insertTag;
+  return calenderTable;
 }
+
+module.exports = {
+  getCalenderData: getCalenderData,
+  generateCalender: generateCalender
+};
