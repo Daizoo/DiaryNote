@@ -1,7 +1,13 @@
 const Quill = require('quill');
 
+
+let toolbarOptions = [
+	['bold', 'italic', 'underline', 'strike']
+]
+
 let options = {
-  theme: 'snow'
+	theme: 'snow',
+	toolbar: toolbarOptions
 }
 
 let editorStyle = document.getElementById('editorStyle');
