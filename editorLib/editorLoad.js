@@ -1,23 +1,27 @@
 const Quill = require('quill');
+const hljs = require('highlight.js')
 
 
-let toolbarOptions = [
-	['bold', 'italic', 'underline', 'strike']
-]
-
-let options = {
-	theme: 'snow',
-	toolbar: toolbarOptions
-}
-
-let editorStyle = document.getElementById('editorStyle');
 
 const editorSetUp = {
-  editorLoad: function(target) {
-    var container = document.getElementById(target);
+  editorLoad: function() {
+	let editorStyle = document.getElementById('editorStyle');
+	hljs.configure({
+		languages: ['python']
+	});
+	let options = {
+		theme: 'snow',
+		modules: {
+			syntax: true,
+			toolbar: {
+				container: '#toolbar'
+			}
+		}
+	}
     editorStyle.href = './node_modules/quill/dist/quill.snow.css';
-    let editor = new Quill(container, options);
+    let editor = new Quill('#editor', options);
     //TODO: toolbarの設定をする
+	return editor
   }
 }
 
