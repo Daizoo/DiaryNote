@@ -1,26 +1,28 @@
 const Quill = require('quill');
-const hljs = require('highlight.js')
-
+const hljs = require('highlight.js');
 
 
 const editorSetUp = {
   editorLoad: function() {
-	let editorStyle = document.getElementById('editorStyle');
+	let highlightStyle = document.getElementById('highlightStyle');
 	hljs.configure({
-		languages: ['python']
+		languages: ['javascript', 'python']
 	});
+	let editorStyle = document.getElementById('editorStyle');
 	let options = {
 		theme: 'snow',
 		modules: {
-			syntax: true,
+			syntax: {
+				highlight: text => hljs.highlightAuto(text).value
+			},
 			toolbar: {
 				container: '#toolbar'
 			}
 		}
 	}
     editorStyle.href = './node_modules/quill/dist/quill.snow.css';
+	highlightStyle.href = './node_modules/highlight.js/styles/monokai-sublime.css'
     let editor = new Quill('#editor', options);
-    //TODO: toolbarの設定をする
 	return editor
   }
 }
