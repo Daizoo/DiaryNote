@@ -1,1 +1,7 @@
 node_modules/
+
+*.un~
+Session.vim
+.netrwhist
+*~
+*.swp
