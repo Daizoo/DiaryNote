@@ -1,7 +1,7 @@
 function getCalenderData(year, month) {
   let first = new Date(year, (month - 1), 1);
   // 指定年月の1日の情報
-  let last = new Date(year, first.getMonth + 1, 0).getDate();
+  let last = new Date(year, first.getMonth() + 1, 0).getDate();
   // 指定年月の次の月の初日の前の日(=指定月の最終日)
   let firstDay = first.getDay();
   // 初日の曜日取得
@@ -12,17 +12,16 @@ function getCalenderData(year, month) {
   // 曜日の番号換算
 
   for (var i = 0; i < last; i++) {
-    calenderData[i] = {
+    calenderData.push({
       date: i + 1,
       day: dayNum
-    };
+    });
     if (dayNum >= 6) {
       dayNum = 0;
     } else {
       dayNum++;
     }
   }
-
   return calenderData;
 }
 
@@ -83,7 +82,17 @@ function generateCalender(year, month) {
   return calenderTable;
 }
 
+function initCalender(){
+	let calenderParts = document.getElementById('calenderParts');
+	var today = new Date();
+	var year = today.getFullYear();
+	var month = today.getMonth();
+	calenderParts.appendChild(generateCalender(year, month));
+	return today
+}
+
 module.exports = {
-  getCalenderData: getCalenderData,
-  generateCalender: generateCalender
+	getCalenderData: getCalenderData,
+	generateCalender: generateCalender,
+	initCalender: initCalender
 };
