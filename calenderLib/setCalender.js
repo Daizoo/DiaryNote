@@ -1,5 +1,5 @@
 function getCalenderData(year, month) {
-  let first = new Date(year, (month - 1), 1);
+  let first = new Date(year, month, 1);
   // 指定年月の1日の情報
   let last = new Date(year, first.getMonth() + 1, 0).getDate();
   // 指定年月の次の月の初日の前の日(=指定月の最終日)
@@ -83,7 +83,7 @@ function generateCalender(year, month) {
 }
 
 function initCalender(){
-	let calenderParts = document.getElementById('calenderParts');
+	let calenderParts = document.getElementById('calender');
 	var today = new Date();
 	var year = today.getFullYear();
 	var month = today.getMonth();

@@ -5,7 +5,15 @@
     <title>ElectronTest</title>
   </head>
   <body>
-	<div id="calenderParts"></div>
+	<div id="calenderParts">
+		<div id="calender"></div>
+		<button class="changeCalender nextMonth" onclick="changeCalender(1)">
+			Next
+		</button>
+		<button class="changeCalender prevMonth" onclick="changeCalender(-1)">
+			Prev
+		</button>
+	</div>
     <div id="editor">
       <h1>Hello, Electron</h1>
     </div>
