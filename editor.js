@@ -1,4 +1,9 @@
-const Quill = require('quill');
+'use strict';
 
-var container = document.getElementById('editor');
-let editor = new Quill(container);
+const electron = require('electron');
+const remote = electron.remote;
+const editorSetup = require('./editorLib/editorLoad');
+// NOTE: Quillの関係なのかremoteによるrequireでのモジュール読み込みは出来ない（？）
+
+let editor = editorSetup.editorLoad();
+
