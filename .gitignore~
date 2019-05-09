@@ -1,0 +1,11 @@
+node_modules/
+<<<<<<< HEAD
+*.un
+=======
+
+*.un~
+Session.vim
+.netrwhist
+>>>>>>> calenderParts
+*~
+*.swp

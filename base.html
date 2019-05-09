@@ -5,9 +5,19 @@
     <title>ElectronTest</title>
   </head>
   <body>
+	<div id="calenderParts">
+		<div id="calender"></div>
+		<button class="changeCalender nextMonth" onclick="changeCalender(1)">
+			Next
+		</button>
+		<button class="changeCalender prevMonth" onclick="changeCalender(-1)">
+			Prev
+		</button>
+	</div>
     <div id="editor">
       <h1>Hello, Electron</h1>
     </div>
     <script src="editor.js" charset="utf-8"></script>
+	<script src="calender.js" charset="utf-8"></script>
   </body>
 </html>
