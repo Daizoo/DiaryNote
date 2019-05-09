@@ -1,5 +1,19 @@
+#diaryNote{
+	display: flex;
+}
+
+#calenderParts{
+	margin-right: 10%;
+	width: 20%;
+}
+
+#calenderParts > #calnder{
+	width: 20%;
+	height: 500px;
+}
+
 #notePart {
-	width:500px;
-	height:400px;
+	width:70%;
+	height:500px;
 }
 
