@@ -7,3 +7,7 @@ function dataSave(editor, path){
     else console.log('write success');
   });
 }
+
+module.exports={
+  dataSave: dataSave
+};
