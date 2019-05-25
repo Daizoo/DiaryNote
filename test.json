@@ -1,1 +1,7 @@
-[object Object]
+{
+  "ops": [
+    {
+      "insert": "aaa\nbbb\n"
+    }
+  ]
+}

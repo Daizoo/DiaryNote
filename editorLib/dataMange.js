@@ -11,12 +11,14 @@ function dataSave(quill, option){
     console.log("A user action triggered this change.");
   }
 
-  fs.writeFile('test.json', delta, (err) => {
+  content = JSON.stringify(quill.getContents(), null, 2);
+
+  fs.writeFile('test.json', content, (err) => {
     if (err) console.log(err);
     else console.log('write successfull');
   });
-  console.log(oldDelta);
-  console.log(delta);
+  //console.log(oldDelta);
+  console.log(content);
   }
 );
 }
