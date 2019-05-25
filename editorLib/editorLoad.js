@@ -5,6 +5,7 @@ const dataManage = require('./dataMange.js')
 
 const editorSetUp = {
 	editorLoad: function () {
+		//NOTE: Want to show list of editor and highlight's style.
 		Quill.register('modules/dataSave', dataManage.dataSave);
 		let highlightStyle = document.getElementById('highlightStyle');
 		hljs.configure({
