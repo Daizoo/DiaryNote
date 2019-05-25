@@ -9,7 +9,7 @@ function dataSave(quill, option){
     console.log("A user action triggered this change.");
   }
 
-  fs.write('test.json', oldDelta, (err) => {
+  fs.writeFile('test.json', delta, (err) => {
     if (err) console.log(err);
     else console.log('write successfull');
   });
