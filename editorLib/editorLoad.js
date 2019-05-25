@@ -1,9 +1,11 @@
 const Quill = require('quill');
 const hljs = require('highlight.js');
+const dataManage = require('./dataMange.js')
 
 
 const editorSetUp = {
 	editorLoad: function () {
+		Quill.register('modules/dataSave', dataManage.dataSave);
 		let highlightStyle = document.getElementById('highlightStyle');
 		hljs.configure({
 			languages: ['javascript', 'python']
@@ -17,12 +19,14 @@ const editorSetUp = {
 				},
 				toolbar: {
 					container: '#toolbar'
-				}
+				},
+				dataSave: true
 			}
 		};
 		editorStyle.href = './node_modules/quill/dist/quill.snow.css';
 		highlightStyle.href = './node_modules/highlight.js/styles/monokai-sublime.css';
 		let editor = new Quill('#editor', options);
+
 		return editor;
 	}
 }
