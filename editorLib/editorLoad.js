@@ -6,7 +6,7 @@ const dataManage = require('./dataMange.js')
 const editorSetUp = {
 	editorLoad: function () {
 		//NOTE: Want to show list of editor and highlight's style.
-		Quill.register('modules/dataSave', dataManage.dataSave);
+		Quill.register('modules/dataManage', dataManage.dataManage);
 		let highlightStyle = document.getElementById('highlightStyle');
 		hljs.configure({
 			languages: ['javascript', 'python']
@@ -21,7 +21,7 @@ const editorSetUp = {
 				toolbar: {
 					container: '#toolbar'
 				},
-				dataSave: true
+				dataManage: true
 			}
 		};
 		editorStyle.href = './node_modules/quill/dist/quill.snow.css';
