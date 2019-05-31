@@ -47,15 +47,22 @@ class dataManage {
     });
   }
 
-  reInitialize(year, month, title) {
-    return new Promise((resolve, reject) => {
+  async reInitialize() {
+    try {
       clearInterval(this.interval);
       this.dataSave();
-    });
+      setInterval(this.dataSave.bind(this), 20000);
+    } catch(err) {
+      return reject(err);
+    }
   }
 
-  dataLoad(){
-    Promise.resolve().then(this.reInitialize.bind(this))
+  async dataLoad(){
+    try {
+      await reInitialize();
+    } catch(err) {
+      console.log(err);
+    }
   }
 }
 
