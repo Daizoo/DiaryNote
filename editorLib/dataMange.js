@@ -4,28 +4,46 @@ const fs = require('fs');
 //TODO: filepath changed by date, but NOT change file path to loaded file.
 
 class dataManage {
-  constructor(quill, options) {
+  async constructor(quill, options) {
     this.quill = quill;
     this.options = options;
     this.saveDir = '';
     this.saveNote = '';
     //this.dataSave.bind(this);
-    //this.fileListContainer = document.querySelector(options.fileList);
     this.baseDate = new Date();
+    //this.fileListContainer = document.querySelector(options.fileList);
     this.baseYear = this.baseDate.getFullYear();
     this.baseMonth = this.baseDate.getMonth();
     this.baseDay = this.baseDate.getDay();
     this.reInitialize.bind(this);
     this.initialize.bind(this);
-    this.initialize(); // initialize Note
+    await this.initialize(); // initialize Note
     //listLoader(toString(this.baseDate.getFullYear()) + toString(this.baseDate.getMonth()));
     this.interval = setInterval(this.dataSave.bind(this), 20000);
   }
 
-  initialize() {
+  async initialize() {
+    let year = this.baseYear.toString();
+    let month = this.baseMonth.toString();
+    let day = this.baseDay.toString();
+    // read Note DB and tag DB
+    fs.readFile('./noteDB.json', {encoding:'utf-8'}, (err, file) => {
+      if (err) {
+        this.noteDB = {};
+        this.noteDB[year] = {};
+        this.noteDB[year][month] = {};
+        this.noteDB[year][month][day] = [];
+      } else {
+        this.noteDB = JSON.parse(file);
+        // check today's note existing
+        if (Object.keys(this.noteDB).find(item => item === year) === -1) this.noteDB[year] = {}
+        if (Object.keys(this.noteDB[year]).find(item => item === month) === -1) this.noteDB[year][month] = {}
+        if (Object.keys(this.noteDB[year][month]).find(item => item === day) === -1) this.noteDB[year][month][day] = []
+      }
+    });
+    // check today's note saving directroy
     try {
-      fs.mkdirSync('./'+this.baseYear, {recursive: true});
-      fs.mkdirSync('./'+this.baseYear+'/'+this.baseMonth, {recursive: true});
+      fs.mkdirSync('./noteData/' + year + '/'+ month, {recursive:true});
     } catch(err) {
       console.log(err);
     }
