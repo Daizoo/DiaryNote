@@ -12,6 +12,8 @@ class dataManage {
     //this.dataSave.bind(this);
     this.baseDate = new Date();
     //this.fileListContainer = document.querySelector(options.fileList);
+    this.noteDB = new Object();
+    this.tagDB = new Object();
     this.baseYear = this.baseDate.getFullYear();
     this.baseMonth = this.baseDate.getMonth();
     this.baseDay = this.baseDate.getDay();
@@ -40,6 +42,11 @@ class dataManage {
         if (Object.keys(this.noteDB[year]).find(item => item === month) === -1) this.noteDB[year][month] = {}
         if (Object.keys(this.noteDB[year][month]).find(item => item === day) === -1) this.noteDB[year][month][day] = []
       }
+    });
+
+    fs.readFile('./tagDB.json', {encoding:'utf-8'}, (err, file) => {
+      if (err) this.tagDB = {};
+      else this.tagDB = JSON.parse(file);
     });
     // check today's note saving directroy
     try {
