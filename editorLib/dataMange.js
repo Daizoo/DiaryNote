@@ -28,40 +28,30 @@ class dataManage {
     let year = this.baseYear.toString();
     let month = this.baseMonth.toString();
     let day = this.baseDay.toString();
-    // read Note DB and tag DB
-    fs.readFile('./noteDB.json', {encoding:'utf-8'}, (err, file) => {
-      if (err) {
-        this.noteDB = {};
-        this.noteDB[year] = {};
-        this.noteDB[year][month] = {};
-        this.noteDB[year][month][day] = [];
-      } else {
-        this.noteDB = JSON.parse(file);
-        // check today's note existing
-        if (Object.keys(this.noteDB).find(item => item === year) === -1) this.noteDB[year] = {}
-        if (Object.keys(this.noteDB[year]).find(item => item === month) === -1) this.noteDB[year][month] = {}
-        if (Object.keys(this.noteDB[year][month]).find(item => item === day) === -1) this.noteDB[year][month][day] = []
-      }
-    });
-
+    this.saveDir = './noteData/'+ year + '/' + month + '/' + day;
     fs.readFile('./tagDB.json', {encoding:'utf-8'}, (err, file) => {
       if (err) this.tagDB = {};
       else this.tagDB = JSON.parse(file);
     });
-    // check today's note saving directroy
     try {
-      fs.mkdirSync('./noteData/' + year + '/'+ month, {recursive:true});
+      fs.mkdirSync(this.saveDir, {recursive:true});
     } catch(err) {
       console.log(err);
     }
 
-    this.saveDir = './'+this.baseYear + '/' + this.baseMonth;
-    this.saveNote ='Untitled.json';
+    fs.readdir(this.saveDir, {withFileTypes: true}, (err, dirents) => {
+      if (err) throw err;
+      else {
+        let count = dirents.length;
+        this.saveFile = year + month + day + count + '.json';
+      }
+    });
+
     console.log(this.saveDir);
   }
 
-  listLoader(dirPath) {
-    let noteList = fs.readdirSync(dirPath);
+  listLoader(year, month, day) {
+    let noteList = this.noteDB[year][month][day]
   }
 
   dataSave() {
