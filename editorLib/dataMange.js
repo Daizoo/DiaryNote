@@ -13,11 +13,11 @@ class dataManage {
     //this.dataSave.bind(this);
     this.baseDate = new Date();
     //this.fileListContainer = document.querySelector(options.fileList);
-    this.noteDB = new Object();
+    //this.noteDB = new Object();
     this.tagDB = new Object();
-    this.baseYear = this.baseDate.getFullYear();
-    this.baseMonth = this.baseDate.getMonth();
-    this.baseDay = this.baseDate.getDay();
+    //this.baseYear = this.baseDate.getFullYear();
+    //this.baseMonth = this.baseDate.getMonth();
+    //this.baseDay = this.baseDate.getDay();
     this.reInitialize.bind(this);
     this.initialize.bind(this);
     await this.initialize(); // initialize Note
@@ -26,7 +26,7 @@ class dataManage {
   }
 
   async initialize() {
-    let year = this.baseYear.toString();
+    let year = this.baseDate.getFullYear().toString();
     let month = this.baseMonth.toString();
     let day = this.baseDay.toString();
     try {
@@ -65,6 +65,7 @@ class dataManage {
     try {
       clearInterval(this.interval);
       this.dataSave();
+      this.baseDate = new Date(year, month, day);
       setInterval(this.dataSave.bind(this), 20000);
     } catch (err) {
       return reject(err);
