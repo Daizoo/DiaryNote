@@ -61,20 +61,22 @@ class dataManage {
     console.log(this.saveDir);
   }
 
+  async reInitialize(year, month, day) {
+    try {
+      clearInterval(this.interval);
+      this.dataSave();
+      setInterval(this.dataSave.bind(this), 20000);
+    } catch (err) {
+      return reject(err);
+    }
+  }
+
   listMaker() {
-    if (this.noteList.length > 0) {
-      for (var i = 0; i < this.noteList; i++) {
-        var noteItem = document.createElement('li');
-        var rawData = fs.readFileSync(this.saveDir + '/' + this.noteList[i], {
-          encoding: 'utf-8'
-        });
-        var noteTitle = JSON.stringify(rawData)[title];
-        noteItem.innerText = noteTitle;
-        this.noteListContainer.appendChild(noteItem);
-      }
-      return true
-    } else {
-      return false
+    for (var i = 0; i < this.noteList.length; i++) {
+      var noteData = JSON.parse(fs.readFileSync());
+      var noteItem = document.createElement('li');
+      noteItem.innerHTML = noteData['title'];
+      this.noteListContainer.appendChild(noteItem);
     }
   }
 
@@ -90,15 +92,6 @@ class dataManage {
     });
   }
 
-  async reInitialize(year, month, day) {
-    try {
-      clearInterval(this.interval);
-      this.dataSave();
-      setInterval(this.dataSave.bind(this), 20000);
-    } catch (err) {
-      return reject(err);
-    }
-  }
 
   async dataLoad(notePath) {
     try {
