@@ -7,6 +7,7 @@ class dataManage {
   async constructor(quill, options) {
     this.quill = quill;
     this.options = options;
+    this.noteListContainer = document.getElementById('noteList');
     this.saveDir = '';
     this.saveNote = '';
     //this.dataSave.bind(this);
@@ -28,30 +29,57 @@ class dataManage {
     let year = this.baseYear.toString();
     let month = this.baseMonth.toString();
     let day = this.baseDay.toString();
-    this.saveDir = './noteData/'+ year + '/' + month + '/' + day;
-    fs.readFile('./tagDB.json', {encoding:'utf-8'}, (err, file) => {
-      if (err) this.tagDB = {};
-      else this.tagDB = JSON.parse(file);
-    });
     try {
-      fs.mkdirSync(this.saveDir, {recursive:true});
-    } catch(err) {
+      fs.mkdirSync(this.saveDir, {
+        recursive: true
+      });
+    } catch (err) {
       console.log(err);
     }
 
-    fs.readdir(this.saveDir, {withFileTypes: true}, (err, dirents) => {
+    fs.readdir(this.saveDir, {
+      withFileTypes: true
+    }, (err, dirents) => {
       if (err) throw err;
       else {
         let count = dirents.length;
         this.saveFile = year + month + day + count + '.json';
+        this.noteList = [];
+        for (var i = 0; i < dirents.length; i++) {
+          this.noteList.push(dirents[i].name);
+        }
       }
     });
 
+    this.saveDir = './noteData/' + year + '/' + month + '/' + day;
+    fs.readFile('./tagDB.json', {
+      encoding: 'utf-8'
+    }, (err, file) => {
+      if (err) this.tagDB = {};
+      else this.tagDB = JSON.parse(file);
+    });
     console.log(this.saveDir);
   }
 
-  listLoader(year, month, day) {
-    let noteList = this.noteDB[year][month][day]
+  listMaker() {
+    if (this.noteList.length > 0) {
+      for (var i = 0; i < this.noteList; i++) {
+        var noteItem = document.createElement('li');
+        var rawData = fs.readFileSync(this.saveDir + '/' + this.noteList[i], {
+          encoding: 'utf-8'
+        });
+        var noteTitle = JSON.stringify(rawData)[title];
+        noteItem.innerText = noteTitle;
+        this.noteListContainer.appendChild(noteItem);
+      }
+      return true
+    } else {
+      return false
+    }
+  }
+
+  createNewNote() {
+    let newNoteFile = '';
   }
 
   dataSave() {
@@ -62,20 +90,20 @@ class dataManage {
     });
   }
 
-  async reInitialize() {
+  async reInitialize(year, month, day) {
     try {
       clearInterval(this.interval);
       this.dataSave();
       setInterval(this.dataSave.bind(this), 20000);
-    } catch(err) {
+    } catch (err) {
       return reject(err);
     }
   }
 
-  async dataLoad(){
+  async dataLoad(notePath) {
     try {
       await reInitialize();
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
   }
