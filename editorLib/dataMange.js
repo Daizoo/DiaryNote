@@ -15,9 +15,6 @@ class dataManage {
     //this.fileListContainer = document.querySelector(options.fileList);
     //this.noteDB = new Object();
     this.tagDB = new Object();
-    //this.baseYear = this.baseDate.getFullYear();
-    //this.baseMonth = this.baseDate.getMonth();
-    //this.baseDay = this.baseDate.getDay();
     this.reInitialize.bind(this);
     this.initialize.bind(this);
     await this.initialize(); // initialize Note
@@ -27,8 +24,8 @@ class dataManage {
 
   async initialize() {
     let year = this.baseDate.getFullYear().toString();
-    let month = this.baseMonth.toString();
-    let day = this.baseDay.toString();
+    let month = this.baseDate.getMonth().toString();
+    let day = this.baseDate.getDay().toString();
     try {
       fs.mkdirSync(this.saveDir, {
         recursive: true
