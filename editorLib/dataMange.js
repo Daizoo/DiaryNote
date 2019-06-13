@@ -16,11 +16,12 @@ class dataManage {
     //this.fileListContainer = document.querySelector(options.fileList);
     //this.noteDB = new ObjectgetElementById(options.title);
     try {
-      let rawTagDB = fs.readFileSync('./tagDB.json');
+      let rawTagDB = fs.readFileSync('./noteData/tagDB.json');
       this.tagDB = JSON.parse(rawTagDB);
     } catch (err) {
       console.log(err);
       this.tagDB = {};
+      fs.writeFileSync('./noteData/tagDB.json', JSON.stringify(this.tagDB));
     }
     this.reInitialize.bind(this);
     this.initialize.bind(this);
@@ -98,7 +99,7 @@ class dataManage {
       title: title,
       contents: contents
     };
-    fs.writeFile(this.saveDir + '/' + this.saveNote, JSON.stringify(noteData, null, 2), (err) => {
+    fs.writeFile(this.saveDir + '/' + this.saveFile, JSON.stringify(noteData, null, 2), (err) => {
       if (err) return err;
       else console.log('write successful');
     });
