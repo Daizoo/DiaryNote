@@ -4,31 +4,42 @@ const fs = require('fs');
 //TODO: filepath changed by date, but NOT change file path to loaded file.
 
 class dataManage {
-  async constructor(quill, options) {
+  constructor(quill, options) {
     this.quill = quill;
     this.options = options;
     this.noteListContainer = document.getElementById('noteList');
+    this.noteTitle = document.getElementById(options.title);
     this.saveDir = '';
     this.saveNote = '';
     //this.dataSave.bind(this);
     this.baseDate = new Date();
     //this.fileListContainer = document.querySelector(options.fileList);
-    //this.noteDB = new Object();
-    this.tagDB = new Object();
-    //this.baseYear = this.baseDate.getFullYear();
-    //this.baseMonth = this.baseDate.getMonth();
-    //this.baseDay = this.baseDate.getDay();
+    //this.noteDB = new ObjectgetElementById(options.title);
+    try {
+      let rawTagDB = fs.readFileSync('./tagDB.json');
+      this.tagDB = JSON.parse(rawTagDB);
+    } catch (err) {
+      console.log(err);
+      this.tagDB = {};
+    }
     this.reInitialize.bind(this);
     this.initialize.bind(this);
-    await this.initialize(); // initialize Note
+    this.initialize(); // initialize Note
     //listLoader(toString(this.baseDate.getFullYear()) + toString(this.baseDate.getMonth()));
-    this.interval = setInterval(this.dataSave.bind(this), 20000);
+    try {
+      this.interval = setInterval(this.dataSave.bind(this), 1000);
+      console.log('set interval successful');
+    } catch {
+      console.log(err);
+    }
   }
 
   async initialize() {
     let year = this.baseDate.getFullYear().toString();
-    let month = this.baseMonth.toString();
-    let day = this.baseDay.toString();
+    let month = this.baseDate.getMonth().toString();
+    let day = this.baseDate.getDay().toString();
+
+    this.saveDir = './noteData/' + year + '/' + month + '/' + day;
     try {
       fs.mkdirSync(this.saveDir, {
         recursive: true
@@ -40,7 +51,7 @@ class dataManage {
     fs.readdir(this.saveDir, {
       withFileTypes: true
     }, (err, dirents) => {
-      if (err) throw err;
+      if (err) console.log(err);
       else {
         let count = dirents.length;
         this.saveFile = year + month + day + count + '.json';
@@ -51,13 +62,6 @@ class dataManage {
       }
     });
 
-    this.saveDir = './noteData/' + year + '/' + month + '/' + day;
-    fs.readFile('./tagDB.json', {
-      encoding: 'utf-8'
-    }, (err, file) => {
-      if (err) this.tagDB = {};
-      else this.tagDB = JSON.parse(file);
-    });
     console.log(this.saveDir);
   }
 
@@ -66,6 +70,7 @@ class dataManage {
       clearInterval(this.interval);
       this.dataSave();
       this.baseDate = new Date(year, month, day);
+      await this.initialize();
       setInterval(this.dataSave.bind(this), 20000);
     } catch (err) {
       return reject(err);
@@ -82,12 +87,18 @@ class dataManage {
   }
 
   createNewNote() {
+    this.baseDate = new Date();
     let newNoteFile = '';
   }
 
   dataSave() {
-    let contents = JSON.stringify(this.quill.getContents(), null, 2);
-    fs.writeFile(this.saveDir + '/' + this.saveNote, contents, (err) => {
+    let title = this.noteTitle.textContent;
+    let contents = this.quill.getContents();
+    let noteData = {
+      title: title,
+      contents: contents
+    };
+    fs.writeFile(this.saveDir + '/' + this.saveNote, JSON.stringify(noteData, null, 2), (err) => {
       if (err) return err;
       else console.log('write successful');
     });
