@@ -19,7 +19,6 @@ class dataManage {
       let rawTagDB = fs.readFileSync('./noteData/tagDB.json');
       this.tagDB = JSON.parse(rawTagDB);
     } catch (err) {
-      console.log(err);
       this.tagDB = {};
       fs.writeFileSync('./noteData/tagDB.json', JSON.stringify(this.tagDB));
     }
@@ -27,12 +26,7 @@ class dataManage {
     this.initialize.bind(this);
     this.initialize(); // initialize Note
     //listLoader(toString(this.baseDate.getFullYear()) + toString(this.baseDate.getMonth()));
-    try {
       this.interval = setInterval(this.dataSave.bind(this), 1000);
-      console.log('set interval successful');
-    } catch {
-      console.log(err);
-    }
   }
 
   async initialize() {
@@ -46,13 +40,13 @@ class dataManage {
         recursive: true
       });
     } catch (err) {
-      console.log(err);
+      throw err;
     }
 
     fs.readdir(this.saveDir, {
       withFileTypes: true
     }, (err, dirents) => {
-      if (err) console.log(err);
+      if (err) print(this.saveDir + ' is Not Found');
       else {
         let count = dirents.length;
         this.saveFile = year + month + day + count + '.json';
@@ -63,7 +57,7 @@ class dataManage {
       }
     });
 
-    console.log(this.saveDir);
+    //console.log(this.saveDir);
   }
 
   async reInitialize(year, month, day) {
@@ -74,7 +68,7 @@ class dataManage {
       await this.initialize();
       setInterval(this.dataSave.bind(this), 20000);
     } catch (err) {
-      return reject(err);
+      throw err
     }
   }
 
@@ -101,16 +95,16 @@ class dataManage {
     };
     fs.writeFile(this.saveDir + '/' + this.saveFile, JSON.stringify(noteData, null, 2), (err) => {
       if (err) return err;
-      else console.log('write successful');
+      else print('write successful');
     });
   }
 
 
   async dataLoad(notePath) {
     try {
-      await reInitialize();
+      await this.reInitialize();
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 }
