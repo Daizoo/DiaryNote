@@ -11,10 +11,7 @@ class dataManage {
     this.noteTitle = document.getElementById(options.title);
     this.saveDir = '';
     this.saveNote = '';
-    //this.dataSave.bind(this);
     this.baseDate = new Date();
-    //this.fileListContainer = document.querySelector(options.fileList);
-    //this.noteDB = new ObjectgetElementById(options.title);
     try {
       let rawTagDB = fs.readFileSync('./noteData/tagDB.json');
       this.tagDB = JSON.parse(rawTagDB);
@@ -25,14 +22,13 @@ class dataManage {
     this.reInitialize.bind(this);
     this.initialize.bind(this);
     this.initialize(); // initialize Note
-    //listLoader(toString(this.baseDate.getFullYear()) + toString(this.baseDate.getMonth()));
-      this.interval = setInterval(this.dataSave.bind(this), 1000);
+    this.interval = setInterval(this.dataSave.bind(this), 20000);
   }
 
   async initialize() {
     let year = this.baseDate.getFullYear().toString();
     let month = this.baseDate.getMonth().toString();
-    let day = this.baseDate.getDay().toString();
+    let day = this.baseDate.getDate().toString();
 
     this.saveDir = './noteData/' + year + '/' + month + '/' + day;
     try {
@@ -40,24 +36,23 @@ class dataManage {
         recursive: true
       });
     } catch (err) {
-      throw err;
+      process.stdout.write(err);
     }
-
     fs.readdir(this.saveDir, {
       withFileTypes: true
     }, (err, dirents) => {
-      if (err) print(this.saveDir + ' is Not Found');
+      if (err) process.stdout.write(this.saveDir + ' is Not Found');
       else {
         let count = dirents.length;
         this.saveFile = year + month + day + count + '.json';
         this.noteList = [];
         for (var i = 0; i < dirents.length; i++) {
-          this.noteList.push(dirents[i].name);
+          this.noteList.push(this.saveDir + '/' + dirents[i].name);
         }
       }
+      this.listMaker();
     });
-
-    //console.log(this.saveDir);
+    this.noteTitle.innerText = 'Untitled'
   }
 
   async reInitialize(year, month, day) {
@@ -73,12 +68,14 @@ class dataManage {
   }
 
   listMaker() {
+    let noteListUl = document.createElement('ul');
     for (var i = 0; i < this.noteList.length; i++) {
-      var noteData = JSON.parse(fs.readFileSync());
+      var noteData = JSON.parse(fs.readFileSync(this.noteList[i]));
       var noteItem = document.createElement('li');
       noteItem.innerHTML = noteData['title'];
-      this.noteListContainer.appendChild(noteItem);
+      noteListUl.appendChild(noteItem);
     }
+    this.noteListContainer.appendChild(noteListUl);
   }
 
   createNewNote() {
@@ -95,7 +92,7 @@ class dataManage {
     };
     fs.writeFile(this.saveDir + '/' + this.saveFile, JSON.stringify(noteData, null, 2), (err) => {
       if (err) return err;
-      else print('write successful');
+      else process.stdout.write('write successful\n');
     });
   }
 

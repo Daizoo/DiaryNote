@@ -1,15 +1,10 @@
 function getCalenderData(year, month) {
   let first = new Date(year, month, 1);
-  // 指定年月の1日の情報
   let last = new Date(year, first.getMonth() + 1, 0).getDate();
-  // 指定年月の次の月の初日の前の日(=指定月の最終日)
   let firstDay = first.getDay();
-  // 初日の曜日取得
 
   let calenderData = [];
-  // 指定年月のカレンダーデータ
   let dayNum = firstDay;
-  // 曜日の番号換算
 
   for (var i = 0; i < last; i++) {
     calenderData.push({
@@ -27,13 +22,10 @@ function getCalenderData(year, month) {
 
 function generateCalender(year, month) {
   let dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  // 曜日一覧
   let calenderData = getCalenderData(year, month);
-  // カレンダーデータ取得
   var i = calenderData[0]['day'];
-  // 初日の曜日データ取得
   /*初日より前の空欄埋め*/
-  while(i>0){
+  while (i > 0) {
     i--;
     calenderData.unshift({
       date: '',
@@ -41,8 +33,8 @@ function generateCalender(year, month) {
     });
   }
   /*末尾埋め*/
-  var i = calenderData[calenderData.length-1]['day'];
-  while(i<6){
+  var i = calenderData[calenderData.length - 1]['day'];
+  while (i < 6) {
     i++;
     calenderData.push({
       date: '',
@@ -56,7 +48,7 @@ function generateCalender(year, month) {
   var insertTag = '';
   insertTag += '<thead>';
   insertTag += '<tr>';
-  for(var i = 0; i < dayOfWeek.length; i++){
+  for (var i = 0; i < dayOfWeek.length; i++) {
     insertTag += '<th>';
     insertTag += dayOfWeek[i];
     insertTag += '</th>';
@@ -65,14 +57,14 @@ function generateCalender(year, month) {
   insertTag += '</thead>';
   /*ボディ部分*/
   insertTag += '<tbody>';
-  for(var i = 0; i < calenderData.length; i++){
-    if(calenderData[i]['day'] <= 0){
+  for (var i = 0; i < calenderData.length; i++) {
+    if (calenderData[i]['day'] <= 0) {
       insertTag += '<tr>';
     }
     insertTag += '<td>';
     insertTag += calenderData[i]['date'];
     insertTag += '</td>';
-    if(calenderData[i]['day'] >= 6){
+    if (calenderData[i]['day'] >= 6) {
       insertTag += '</tr>';
     }
   }
@@ -82,17 +74,17 @@ function generateCalender(year, month) {
   return calenderTable;
 }
 
-function initCalender(){
-	let calenderParts = document.getElementById('calender');
-	var today = new Date();
-	var year = today.getFullYear();
-	var month = today.getMonth();
-	calenderParts.appendChild(generateCalender(year, month));
-	return today
+function initCalender() {
+  let calenderParts = document.getElementById('calender');
+  var today = new Date();
+  var year = today.getFullYear();
+  var month = today.getMonth();
+  calenderParts.appendChild(generateCalender(year, month));
+  return today
 }
 
 module.exports = {
-	getCalenderData: getCalenderData,
-	generateCalender: generateCalender,
-	initCalender: initCalender
+  getCalenderData: getCalenderData,
+  generateCalender: generateCalender,
+  initCalender: initCalender
 };
